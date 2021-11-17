@@ -152,7 +152,7 @@ def main(dataset_name, net_name, data_path, capacity, channel, cvae_batch_size, 
 # start training CVAD
 # ################################################################################     
                                                
-    train_all(embnet, cls_model, imgSize, variational_beta, cvae_batch_size, cvae_optimizer, cls_optimizer, recon_loss, cls_loss, cfg.settings['dataset_name'], cvae_dataloaders['train'], cvae_dataloaders['val'], cvae_dataloaders['test'], cfg.settings['cvae_n_epochs'], cfg.settings['cls_n_epochs'],cfg.settings['channel'])    
+    train_all(embnet, cls_model, imgSize, variational_beta, cvae_batch_size, cvae_optimizer, cls_optimizer, recon_loss, cls_loss, cfg.settings['dataset_name'], cvae_dataloaders['train'], cvae_dataloaders['val'], cvae_dataloaders['test'], cfg.settings['cvae_n_epochs'], cfg.settings['cls_n_epochs'],cfg.settings['channel'], device)    
 
 
 if __name__ == '__main__':
