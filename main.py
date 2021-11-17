@@ -113,13 +113,18 @@ def main(dataset_name, net_name, data_path, capacity, channel, cvae_batch_size, 
     logger.info('Normal class:' + cfg.settings['normal_class'])    
     logger.info("CVAE ==> embnet")
     logger.info("CVAD ==> cls_model")
+    
+    imgSize = 256
+    if dataset_name == "cifar10":
+        imgSize = 32
+        channel = 3
 
 
 
     normal_class = re.findall(r'\d+', cfg.settings['normal_class'])
     normal_class = [int(x) for x in normal_class]
     cvae_dataloaders, cvae_dataset_sizes = build_cvae_dataset(cfg.settings['dataset_name'], cfg.settings['data_path'], cfg.settings['cvae_batch_size'], normal_class)
-    test_dataloaders, test_dataset_sizes = build_intertest_dataset(cfg.settings['dataset_name'], cfg.settings['data_path'],  cfg.settings['cvae_batch_size'], [0])
+#     test_dataloaders, test_dataset_sizes = build_intertest_dataset(cfg.settings['dataset_name'], cfg.settings['data_path'],  cfg.settings['cvae_batch_size'], [0])
     embnet, cls_model = build_CVAD_net(cfg.settings['dataset_name'], cfg.settings['net_name'], cfg.settings['capacity'], cfg.settings['channel'])
     embnet = embnet.to(device)
     cls_model = cls_model.to(device)
@@ -147,7 +152,7 @@ def main(dataset_name, net_name, data_path, capacity, channel, cvae_batch_size, 
 # start training CVAD
 # ################################################################################     
                                                
-    train_all(embnet, cls_model, cvae_optimizer, cls_optimizer, recon_loss, cls_loss, cfg.settings['dataset_name'], cvae_dataloaders['train'], cvae_dataloaders['val'], cvae_dataloaders['test'], cfg.settings['cvae_n_epochs'], cfg.settings['cls_n_epochs'],cfg.settings['channel'])    
+    train_all(embnet, cls_model, imgSize, variational_beta, cvae_batch_size, cvae_optimizer, cls_optimizer, recon_loss, cls_loss, cfg.settings['dataset_name'], cvae_dataloaders['train'], cvae_dataloaders['val'], cvae_dataloaders['test'], cfg.settings['cvae_n_epochs'], cfg.settings['cls_n_epochs'],cfg.settings['channel'])    
 
 
 if __name__ == '__main__':
