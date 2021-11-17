@@ -23,7 +23,7 @@ from train import train_all, load_ckpt
 # Settings
 ################################################################################
 @click.command()
-@click.argument('dataset_name', type=click.Choice(['rsna', 'ivc-filter', 'siim']))
+@click.argument('dataset_name', type=click.Choice(['cifar10', 'siim']))
 @click.argument('net_name', type=click.Choice(['CVAD]))
 @click.argument('data_path', type=click.Path(exists=True))
 @click.option('--capacity', type=int, default=16, help='Specify Convoluation layer channel unit')
