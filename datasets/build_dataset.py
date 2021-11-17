@@ -4,9 +4,16 @@ import numpy as np
 from .SIIM import *
 from .CIFAR10Dataset import *
 
+from torchvision import transforms
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 
+
+cifar10_tsfms = transforms.Compose([
+    transforms.ToPILImage(),
+    transforms.ToTensor(),
+    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+])
 
 def build_cvae_dataset(dataset_name, data_path, cvae_batch_size, normal_class):
     logger = logging.getLogger()
