@@ -112,7 +112,7 @@ class CVAE32(nn.Module):
         x_2 = self.dconv12(x_2)
         x_2 = torch.sigmoid(x_2)
         x_final = 0.5*(x+x_2)
-        return x_final, x_mu, x_logvar, x_mu2, x_logvar2, x
+        return x_final, x_mu, x_logvar, x_mu2, x_logvar2
 
 
 class Discriminator32(nn.Module):
