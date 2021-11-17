@@ -24,7 +24,7 @@ from train import train_all, load_ckpt
 ################################################################################
 @click.command()
 @click.argument('dataset_name', type=click.Choice(['cifar10', 'siim']))
-@click.argument('net_name', type=click.Choice(['CVAD]))
+@click.argument('net_name', type=click.Choice(['CVAD']))
 @click.argument('data_path', type=click.Path(exists=True))
 @click.option('--capacity', type=int, default=16, help='Specify Convoluation layer channel unit')
 @click.option('--channel', type=int, default=1, help='Specify image channel, grayscale images for 1, RGB images for 3')
