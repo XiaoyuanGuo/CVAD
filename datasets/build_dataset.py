@@ -37,9 +37,9 @@ def build_cvae_dataset(dataset_name, data_path, cvae_batch_size, normal_class):
         validate_set = SIIM_Dataset("./data/SIIM/train/", benign[int(0.8*(len( benign)))+1:], [0]*len(benign[int(0.8*(len( benign)))+1:]))
         test_set = SIIM_Dataset("./data/SIIM/train/", benign[int(0.8*(len( benign)))+1:]+malignant, [0]*len(benign[int(0.8*(len( benign)))+1:])+[1]*len(malignant))
         
-    ae_dataloaders = {'train': DataLoader(train_set, batch_size = ae_batch_size, shuffle = True, num_workers = 1),
-                      'val': DataLoader(validate_set, batch_size = ae_batch_size, num_workers = 1),
-                      'test': DataLoader(test_set, batch_size = ae_batch_size, num_workers = 1)}
+    ae_dataloaders = {'train': DataLoader(train_set, batch_size = cvae_batch_size, shuffle = True, num_workers = 1),
+                      'val': DataLoader(validate_set, batch_size = cvae_batch_size, num_workers = 1),
+                      'test': DataLoader(test_set, batch_size = cvae_batch_size, num_workers = 1)}
     ae_dataset_sizes = {'train': len(train_set), 'val': len(validate_set), 'test':len(test_set)}
         
     return ae_dataloaders, ae_dataset_sizes
