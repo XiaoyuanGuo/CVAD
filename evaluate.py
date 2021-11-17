@@ -14,7 +14,7 @@ def get_fpr_tpr_auc(Y_label, Y_preds):
     return fpr, tpr, aucscore
 
 
-def cvae_evaluate(embnet, recon_loss test_dataloader, device):
+def cvae_evaluate(embnet, recon_loss, test_dataloader, device):
     logger = logging.getLogger()
     logger.info("----------- CVAE evaluating------------")
     Targets = []
