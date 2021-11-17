@@ -37,7 +37,7 @@ def cvae_evaluate(embnet, recon_loss, test_dataloader, device):
     Y_label = np.array(np.vstack(Targets).squeeze(1),dtype=int).tolist() 
     Y_preds = []
     for s in anomaly_score:
-        Y_preds.append((s-np.min(np.array(anomaly_score)))/(np.max(np.array(anomaly_score))-np.min(np.array(anomaly_score)))
+        Y_preds.append((s-np.min(np.array(anomaly_score)))/(np.max(np.array(anomaly_score))-np.min(np.array(anomaly_score))))
     fpr, tpr, aucscore = get_fpr_tpr_auc(Y_label, Y_preds) 
     return fpr, tpr, aucscore  
 
