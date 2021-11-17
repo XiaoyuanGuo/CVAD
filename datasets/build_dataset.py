@@ -2,8 +2,6 @@ import logging
 import numpy as np
 
 from .SIIM import *
-from .BIRD import *
-from .COIL100 import *
 from .CIFAR10Dataset import *
 
 from torch.utils.data import DataLoader
@@ -14,7 +12,7 @@ def build_cvae_dataset(dataset_name, data_path, cvae_batch_size, normal_class):
     logger = logging.getLogger()
     logger.info("Build CVAE dataset for {}".format(dataset_name))
     
-    assert dataset_name in ['cifar10', 'bird', 'siim']
+    assert dataset_name in ['cifar10', 'siim']
     
     if dataset_name == "cifar10":
       
@@ -23,12 +21,6 @@ def build_cvae_dataset(dataset_name, data_path, cvae_batch_size, normal_class):
         train_set = CIFAR10LabelDataset(normal_x_train, normal_y_train, cifar10_tsfms)
         validate_set = CIFAR10LabelDataset(normal_x_val, normal_y_val, cifar10_tsfms)
         test_set = CIFAR10LabelDataset(normal_x_val+outlier_x_test, normal_y_val+outlier_y_test, cifar10_tsfms)
-    
-    elif dataset_name == "bird":
-        normal_x_train, normal_y_train, normal_x_val, normal_y_val, outlier_x_test, outlier_y_test = get_bird_data(normal_class)
-        train_set = BIRD_Dataset(normal_x_train, normal_y_train)
-        validate_set = BIRD_Dataset(normal_x_val, normal_y_val)
-        test_set = BIRD_Dataset(normal_x_val+outlier_x_test, normal_y_val+outlier_y_test)
     
     elif dataset_name == "siim":
         
