@@ -9,9 +9,9 @@ imgSize = 32
 channel = 3
 latent_dims = 16
 
-class VAE32(nn.Module):
+class CVAE32(nn.Module):
     def __init__(self,  capacity=16, channel=3):
-        super(VAE32, self).__init__()
+        super(CVAE32, self).__init__()
         self.c = capacity
         self.conv1 = nn.Sequential(
             nn.Conv2d(in_channels=channel, out_channels=self.c, kernel_size=4, stride=2, padding=1),
