@@ -24,7 +24,7 @@ def save_checkpoint(state, filename):
     torch.save(state, filename)  # save checkpoint
     
 
-def train_all(netG, netD, imgSize, optimizerG, optimizerD, recon_loss, cls_loss, dataset, train_loader, val_loader, test_loader, Gepoch, Depoch,channel):
+def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG, optimizerD, recon_loss, cls_loss, dataset, train_loader, val_loader, test_loader, Gepoch, Depoch, channel):
     
     logger = logging.getLogger()
 
@@ -42,7 +42,7 @@ def train_all(netG, netD, imgSize, optimizerG, optimizerD, recon_loss, cls_loss,
             images = images.cuda()
             recon_x, mu, logvar, mu2, logvar2 = netG(images)
             optimizerG.zero_grad()
-            L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2)
+            L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2, variational_beta, imgSize, channel, cvae_batch_size)
             L_dec_vae.backward()
             optimizerG.step()      
             loss.append(L_dec_vae.item())
@@ -60,9 +60,9 @@ def train_all(netG, netD, imgSize, optimizerG, optimizerD, recon_loss, cls_loss,
         for i, (images,_) in enumerate(val_loader):
             images = images.cuda()
             recon_x, mu, logvar, mu2, logvar2 = netG(images)
-            L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2)
+            L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2, variational_beta, imgSize, channel, cvae_batch_size)
             loss.append(L_dec_vae.item())
-            L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2)
+            L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2, variational_beta, imgSize, channel, cvae_batch_size)
         
         logger.info("Epoch:%d   Valloss: %.8f"%(epoch, np.mean(loss)))
         if np.mean(loss)<best_loss:
