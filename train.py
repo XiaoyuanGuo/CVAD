@@ -24,7 +24,7 @@ def save_checkpoint(state, filename):
     torch.save(state, filename)  # save checkpoint
     
 
-def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG, optimizerD, recon_loss, cls_loss, dataset, train_loader, val_loader, test_loader, Gepoch, Depoch, channel):
+def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG, optimizerD, recon_loss, cls_loss, dataset, train_loader, val_loader, test_loader, Gepoch, Depoch, channel, device):
     
     logger = logging.getLogger()
 
