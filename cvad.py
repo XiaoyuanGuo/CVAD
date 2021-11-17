@@ -14,9 +14,9 @@ from sklearn.metrics import roc_curve
 from sklearn.metrics import auc, roc_auc_score
 from datasets.build_dataset import *
 
-from models.modules_tied_2vaegan import VAE, VAE_all
+from networks.CVAE import CVAE
 from models.modules_tied_2vaegan_cifar10 import VAE_all32, Discriminator32
-from models.CVAE import Discriminator
+from networks.CVAE import Discriminator
 
 from torch.utils.data import DataLoader
 from datasets.IVCFilter import IVCFilter_Dataset, get_ivc_anomaly_dataset
