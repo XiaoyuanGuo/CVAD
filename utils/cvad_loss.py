@@ -8,3 +8,4 @@ def recon_loss(recon_x, x, mu, logvar, mu2, logvar2, variational_beta, imgSize, 
     # Normalise by same number of elements as in reconstruction
     KLD /= bsz * imgSize * imgSize * channel
     return MSE + variational_beta * KLD
+
