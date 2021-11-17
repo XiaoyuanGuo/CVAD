@@ -13,7 +13,7 @@ def get_fpr_tpr_auc(Y_label, Y_preds):
     return fpr, tpr, aucscore
 
 
-def cvae_evaluate(embnet, cls_model, recon_loss, cls_loss, test_dataloader, mode, device):
+def cvad_evaluate(embnet, cls_model, recon_loss, cls_loss, test_dataloader, device):
     logger = logging.getLogger()
     logger.info("----------- CVAD evaluating------------")
     Targets = []
