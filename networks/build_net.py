@@ -11,7 +11,7 @@ def build_CVAD_net(dataset_name, net_name, capacity, channel):
     assert dataset_name in ['cifar10', 'siim']
     
     if dataset_name == "cifar10":
-        netG = VAE_all32(capacity,channel)
+        netG = CVAE32(capacity,channel)
         netD = Discriminator32(capacity, channel)  
         
     else:
