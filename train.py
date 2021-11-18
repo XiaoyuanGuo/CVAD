@@ -39,7 +39,7 @@ def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG
         loss = []
         netG.train()
         for i, (images,_) in enumerate(train_loader):
-            images = images.cuda()
+            images = images.to(device)
             recon_x, mu, logvar, mu2, logvar2 = netG(images)
             optimizerG.zero_grad()
             L_dec_vae = recon_loss(recon_x, images, mu, logvar, mu2, logvar2, variational_beta, imgSize, channel, cvae_batch_size)
@@ -73,7 +73,7 @@ def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG
                     'optimizer_state_dict': optimizerG.state_dict(),
                     }, "./weights/"+dataset+"/netG_"+dataset+".pth.tar")
             
-        cvae_evaluate(netG, test_loader, recon_loss, device)
+        cvae_evaluate(netG, recon_loss, test_loader, device, variational_beta, imgSize, channel, cvae_batch_size)
 
     ###############################################################################
     # train Discriminator
@@ -88,8 +88,8 @@ def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG
         netD.train()
     
         for i, (images, targets) in enumerate(train_loader):
-            images = images.cuda()
-            targets = targets.cuda()
+            images = images.to(device)
+            targets = targets.to(device)
             recon_x, mu, logvar, mu2, logvar2 = netG(images)
             preds = netD(images)
             preds2 = netD(recon_x)
@@ -106,8 +106,8 @@ def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG
         loss = []
         netD.eval()
         for i, (images, targets) in enumerate(val_loader):
-            images = images.cuda()
-            targets = targets.cuda()
+            images = images.to(device)
+            targets = targets.to(device)
             recon_x, mu, logvar, mu2, logvar2 = netG(images)
             preds = netD(images)
             preds2 = netD(recon_x)
@@ -125,7 +125,7 @@ def train_all(netG, netD, imgSize, variational_beta, cvae_batch_size, optimizerG
                 'optimizer_state_dict': optimizerD.state_dict(),
                 }, "./weights/"+dataset+"/netD_"+dataset+".pth.tar")
             
-        cvad_evaluate(netG, netD, recon_loss, cls_loss, test_loader, device)
+        cvad_evaluate(netG, netD, recon_loss, cls_loss, test_loader, device, variational_beta, imgSize, channel, cvae_batch_size)
 
 
 
