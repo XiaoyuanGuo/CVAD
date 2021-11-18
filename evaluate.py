@@ -14,21 +14,19 @@ def get_fpr_tpr_auc(Y_label, Y_preds):
     return fpr, tpr, aucscore
 
 
-def cvae_evaluate(embnet, recon_loss, test_dataloader, device):
+def cvae_evaluate(embnet, recon_loss, test_dataloader, device, variational_beta, imgSize, channel, cvae_batch_size):
     logger = logging.getLogger()
     logger.info("----------- CVAE evaluating------------")
     Targets = []
     anomaly_score = []
 
-    with torch.set_grad_enabled(False):    
-        for idx, inputs in enumerate(test_dataloader):
-        
-            images, targets = inputs
+    with torch.set_grad_enabled(False):   
+        for idx, (images, targets) in enumerate(test_dataloader):
             images = images.to(device)
 
             for i in range(0, images.shape[0]):
                 recon_x, mu, logvar, mu2, logvar2 = embnet(images[i].unsqueeze(0))
-                cvae_loss = recon_loss(recon_x, images[i].unsqueeze(0), mu, logvar, mu2, logvar2)
+                cvae_loss = recon_loss(recon_x, images[i].unsqueeze(0), mu, logvar, mu2, logvar2, variational_beta, imgSize, channel, cvae_batch_size)
 
                 if not np.isnan(cvae_loss.item()) and not np.isinf(cvae_loss.item()):
                     anomaly_score.append(cvae_loss.item())
@@ -42,7 +40,7 @@ def cvae_evaluate(embnet, recon_loss, test_dataloader, device):
     return fpr, tpr, aucscore  
 
 
-def cvad_evaluate(embnet, cls_model, recon_loss, cls_loss, test_dataloader, device):
+def cvad_evaluate(embnet, cls_model, recon_loss, cls_loss, test_dataloader, device, variational_beta, imgSize, channel, cvae_batch_size):
     logger = logging.getLogger()
     logger.info("----------- CVAD evaluating------------")
     Targets = []
@@ -50,15 +48,14 @@ def cvad_evaluate(embnet, cls_model, recon_loss, cls_loss, test_dataloader, devi
     anomaly_score2 = []
 
     with torch.set_grad_enabled(False):    
-        for idx, inputs in enumerate(test_dataloader):
-        
-            images, targets = inputs
+        for idx, (images, targets)  in enumerate(test_dataloader):
+
             images = images.to(device)
 
             for i in range(0, images.shape[0]):
                 recon_x, mu, logvar, mu2, logvar2 = embnet(images[i].unsqueeze(0))
                 outputs = cls_model(images[i].unsqueeze(0))
-                cvae_loss = recon_loss(recon_x, images[i].unsqueeze(0), mu, logvar, mu2, logvar2)
+                cvae_loss = recon_loss(recon_x, images[i].unsqueeze(0), mu, logvar, mu2, logvar2, variational_beta, imgSize, channel, cvae_batch_size)
 
                 if not np.isnan(cvae_loss.item()+outputs.detach().cpu().numpy()[0][0]) and not np.isinf(cvae_loss.item()+outputs.detach().cpu().numpy()[0][0]):
                     anomaly_score1.append([cvae_loss.item()])
